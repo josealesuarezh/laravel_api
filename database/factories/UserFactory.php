@@ -18,7 +18,6 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory =new \Faker\Factory();
 $factory->define(App\User::class, function (Faker $faker) {
     static $password;
 
