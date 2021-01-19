@@ -32,6 +32,12 @@ class User extends Authenticatable
         'admin',
     ];
 
+    protected $hidden = [
+        'password',
+        'remember_token',
+        'verification_token',
+    ];
+
     public function setNameAttribute($valor): string
     {
         return $this->attributes['name'] = strtolower($valor);
@@ -51,11 +57,6 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-        'verification_token',
-    ];
 
     public function esVerificado(){
         return $this->verified == User::USUARIO_VERIFICADO;
