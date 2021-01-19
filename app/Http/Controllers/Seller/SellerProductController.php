@@ -8,6 +8,8 @@ use App\Seller;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SellerProductController extends ApiController
 {
@@ -43,7 +45,7 @@ class SellerProductController extends ApiController
         $this->validate($request,$rules);
         $data = $request->all();
         $data['status'] = Product::PRODUCTO_NO_DISPONIBLE;
-        $data['image'] = '1.jpg';
+        $data['image'] = $request->image->store('');
         $data['seller_id'] = $seller->id;
 
         $product = Product::create($data);
@@ -68,9 +70,8 @@ class SellerProductController extends ApiController
          ];
          $this->validate($request,$rules);
 
-         if ($seller->id != $product->id){
-             return $this->errorResponse('El vendedor especificado no es el venedor real del producto',422);
-         }
+         $this->verificarVendedor($seller, $product);
+
          $product->fill($request->intersect([
              'name',
              'description',
@@ -83,6 +84,12 @@ class SellerProductController extends ApiController
                  return $this->errorResponse('Un producto activo debe teber al menos  al menos una categoria',409);
              }
          }
+         if ($request->hasFile('image')){
+             Storage::delete($product->image);
+
+             $product->image = $request->image->store('');
+         }
+
          if ($product->isClean()){
              return $this->errorResponse('Se debe especificar al menos un valor diferente para actualizar',422);
          }
@@ -94,11 +101,21 @@ class SellerProductController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Seller  $seller
-     * @return \Illuminate\Http\Response
+     * @param \App\Seller $seller
+     * @param Product $product
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Seller $seller)
+    public function destroy(Seller $seller,Product $product)
     {
-        //
+        $this->verificarVendedor($seller, $product);
+        Storage::delete($product->image);
+        $product->delete();
+        return $this->showOne($product);
+    }
+
+    protected function verificarVendedor(Seller $seller, Product $product){
+        if ($seller->id != $product->seller_id){
+            throw new HttpException(422,'El vendedor especificado no es el venedor real del producto');
+        }
     }
 }
