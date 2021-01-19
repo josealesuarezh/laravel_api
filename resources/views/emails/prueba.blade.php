@@ -1,12 +1,12 @@
 @component('mail::message')
 # Introduction
+Hola {{$user->name}}
 
-The body of your message.
-
-@component('mail::button', ['url' => ''])
-Button Text
+Verifique su cuenta:
+@component('mail::button', ['url' => route('verify',$user->verification_token)])
+Confirmar mi cuenta
 @endcomponent
 
 Thanks,<br>
-{{ config('app.name') }}
+{{ config('ApiRestful') }}
 @endcomponent
