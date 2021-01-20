@@ -34,13 +34,26 @@ class UserTransformer extends TransformerAbstract
     {
         return [
             'identificador' => (int)$user->id,
-            'nombre' => (int)$user->name,
-            'email' => (int)$user->email,
+            'nombre' => (string)$user->name,
+            'email' => (string)$user->email,
             'verificado' => (int)$user->verified,
             'esAdministrador' => $user->esAdministrador(),
             'fechaCreacion' => (string)$user->created_at,
             'fechaActualizacion' => (string)$user->updated_at,
             'fechaModificacion' => isset($user->deleted_at) ? (string) $user->deleted_at : null,
         ];
+    }
+    public static function originalAttribute($index){
+        $attributes = [
+            'identificador' =>'id',
+            'nombre' => 'name',
+            'email' => 'email',
+            'verificado' => 'verified',
+            'esAdministrador' => 'admin',
+            'fechaCreacion' => 'created_at',
+            'fechaActualizacion' => 'updated_at',
+            'fechaModificacion' =>'deleted_at',
+        ];
+        return isset($attributes[$index])? $attributes[$index] : null;
     }
 }

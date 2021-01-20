@@ -2,10 +2,10 @@
 
 namespace App\Transformers;
 
-use App\Category;
+use App\Transaction;
 use League\Fractal\TransformerAbstract;
 
-class CategoryTransformer extends TransformerAbstract
+class TransactionTransformer extends TransformerAbstract
 {
     /**
      * List of resources to automatically include
@@ -24,32 +24,33 @@ class CategoryTransformer extends TransformerAbstract
     protected $availableIncludes = [
         //
     ];
-
+    
     /**
      * A Fractal transformer.
      *
-     * @param Category $category
      * @return array
      */
-    public function transform(Category $category)
+    public function transform(Transaction $transaction)
     {
         return [
-            'identificador' => (int)$category->id,
+            'identificador' => (int)$transaction->id,
 
-            'titulo' => (int)$category->name,
-            'detalles' => (int)$category->description,
+            'cantidad' => (int)$transaction->quantity,
+            'comprador' => (int)$transaction->buyer_id,
+            'producto' => (int)$transaction->product_id,
 
-            'fechaCreacion' => (string)$category->created_at,
-            'fechaActualizacion' => (string)$category->updated_at,
-            'fechaModificacion' => isset($category->deleted_at) ? (string) $category->deleted_at : null,
+            'fechaCreacion' => (string)$transaction->created_at,
+            'fechaActualizacion' => (string)$transaction->updated_at,
+            'fechaModificacion' => isset($transaction->deleted_at) ? (string) $transaction->deleted_at : null,
         ];
     }
     public static function originalAttribute($index){
         $attributes = [
             'identificador' =>'id',
 
-            'titulo' => 'name',
-            'detalles' => 'description',
+            'cantidad' => 'quantity',
+            'comprador' => 'buyer_id',
+            'producto' => 'product_id',
 
             'fechaCreacion' => 'created_at',
             'fechaActualizacion' => 'updated_at',
