@@ -23,9 +23,10 @@ class SellerBuyerController extends ApiController
             ->get()
             ->pluck('transactions')
             ->collapse()
-            ->pluck('buyers')
+            ->pluck('buyer')
             ->unique()
             ->values();
+
         return $this->showAll($buyers);
     }
 

@@ -42,6 +42,31 @@ class TransactionTransformer extends TransformerAbstract
             'fechaCreacion' => (string)$transaction->created_at,
             'fechaActualizacion' => (string)$transaction->updated_at,
             'fechaModificacion' => isset($transaction->deleted_at) ? (string) $transaction->deleted_at : null,
+
+            'links' => [
+                [
+                    'rel' => 'self',
+                    'href' => route('transactions.show',$transaction->id),
+                ],
+                [
+                    'rel' => 'buyers',
+                    'href' => route('buyers.show',$transaction->buyer_id),
+                ],
+                [
+                    'rel' => 'transaction.seller',
+                    'href' => route('transactions.sellers.index',$transaction->buyer_id),
+                ],
+                [
+                    'rel' => 'transactions.categories',
+                    'href' => route('transactions.categories.index',$transaction->id),
+                ],
+                [
+                    'rel' => 'product',
+                    'href' => route('products.show',$transaction->product_id),
+                ],
+
+
+            ],
         ];
     }
     public static function originalAttribute($index){

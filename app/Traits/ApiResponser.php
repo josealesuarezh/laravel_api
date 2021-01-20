@@ -30,14 +30,14 @@ trait ApiResponser{
         $collection = $this->sortData($collection,$transformer);
         $collection = $this->paginate($collection);
         $collection = $this->transformData($collection,$transformer);
-        $collection = $this->cacheResponse($collection,$transformer);
+        $collection = $this->cacheResponse($collection);
 
         return $this->successResponse($collection,$code);
     }
 
     protected function showOne(Model $instance,$code = 200){
         $transformer = $instance->transformer;
-        $collection = $this->transformData($instance,$transformer);
+        $instance = $this->transformData($instance,$transformer);
         return $this->successResponse($instance,$code);
     }
 
@@ -84,6 +84,7 @@ trait ApiResponser{
         $paginated->appends(request()->all());
         return $paginated;
     }
+
     protected function cacheResponse($data){
         $url = request()->url();
         $queryParam = request()->query();
