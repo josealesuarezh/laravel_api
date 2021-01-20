@@ -65,4 +65,5 @@ class UserTransformer extends TransformerAbstract
         ];
         return isset($attributes[$index])? $attributes[$index] : null;
     }
+
 }
