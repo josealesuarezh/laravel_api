@@ -9,6 +9,10 @@ use App\Product;
 
 class ProductTransactionController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
     /**
      * Display a listing of the resource.
      *
