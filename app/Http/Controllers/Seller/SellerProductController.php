@@ -6,10 +6,8 @@ use App\Http\Controllers\ApiController;
 use App\Product;
 use App\Seller;
 use App\Transformers\ProductTransformer;
-use App\Transformers\UserTransformer;
 use App\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -20,7 +18,7 @@ class SellerProductController extends ApiController
     {
         parent::__construct();
 
-        $this->middleware('transform.input'.ProductTransformer::class)->only(['store','update']);
+        $this->middleware('transform.input:'.ProductTransformer::class)->only(['store','update']);
     }
     /**
      * Display a listing of the resource.
