@@ -68,12 +68,10 @@ class CategoryController extends ApiController
      */
     public function update(Request $request, Category $category)
     {
-        $category->fill($request->intersect([
-            'name',
-            'description'
-        ]));
+        $category->fill($request->all());
         if($category->isClean())
             return $this->errorResponse('Debe especificar un valor dierente para actualizar',422);
+        $category->save();
         return $this->showOne($category);
     }
 

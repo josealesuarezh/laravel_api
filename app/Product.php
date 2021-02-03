@@ -28,6 +28,7 @@ class Product extends Model
     protected $dates = ['deleted_at'];
 
     public $transformer = ProductTransformer::class;
+
     public function estaDisponible(){
         return $this->status == Product::PRODUCTO_DISPONIBLE;
     }
